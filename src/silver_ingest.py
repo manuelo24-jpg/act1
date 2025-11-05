@@ -13,6 +13,7 @@ ventas = (ventas
 .withColumn("id_cliente", col("id_cliente").cast(IntegerType())) 
 .withColumn("unidades", col("unidades").cast(IntegerType())) 
 .withColumn("importe", col("importe").cast(DecimalType()))
+.filter((col("importe") > 0))
 .withColumn("id_producto", col("id_producto"))
 .withColumn("fecha", to_date(col("fecha")))
 .dropDuplicates(["id_venta"])
@@ -20,6 +21,7 @@ ventas = (ventas
 
 fact = (fact.withColumn("id_cliente", col("id_cliente").cast(IntegerType()))
 .withColumn("importe_total", col("importe_total").cast(DecimalType()))
+.filter((col("importe_total") > 0))
 .withColumn("fecha", to_date(col("fecha")))
 .dropDuplicates(["id_factura"])
 )
