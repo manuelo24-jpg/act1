@@ -1,0 +1,7 @@
+python - << 'PY'
+from pyspark.sql import SparkSession
+df = spark.read.parquet("silver/ventas")
+df.show(10,truncate=False)
+print("Filas",df.count())
+spark.stop()
+PY

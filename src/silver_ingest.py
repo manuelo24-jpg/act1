@@ -11,14 +11,13 @@ fact     = spark.read.parquet("bronze/facturas_meta")
 ventas = (ventas
 .withColumn("id_venta", col("id_venta").cast(IntegerType())) 
 .withColumn("id_cliente", col("id_cliente").cast(IntegerType())) 
-.withColumn("id_producto", col("id_producto").cast(IntegerType())) 
 .withColumn("unidades", col("unidades").cast(IntegerType())) 
 .withColumn("importe", col("importe").cast(DecimalType()))
 .withColumn("fecha", to_date(col("fecha")))
 .dropDuplicates(["id_venta"])
 )
 
-ventas.write.mode("overwrite").partitionBy("fecha").parquet("silver/ventas")
+ventas.write.mode("overwrite").parquet("silver/ventas")
 
 print("Silver listo. ")
 spark.stop()
