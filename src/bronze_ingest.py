@@ -15,3 +15,5 @@ fact.write.mode("overwrite").parquet("bronze/facturas_meta")
 
 print("Bronze listo. ")
 spark.stop()
+
+
