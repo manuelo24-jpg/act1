@@ -13,11 +13,24 @@ ventas = (ventas
 .withColumn("id_cliente", col("id_cliente").cast(IntegerType())) 
 .withColumn("unidades", col("unidades").cast(IntegerType())) 
 .withColumn("importe", col("importe").cast(DecimalType()))
+.withColumn("id_producto", col("id_producto"))
 .withColumn("fecha", to_date(col("fecha")))
 .dropDuplicates(["id_venta"])
 )
 
+fact = (fact.withColumn("id_cliente", col("id_cliente").cast(IntegerType()))
+.withColumn("importe_total", col("importe_total").cast(DecimalType()))
+.withColumn("fecha", to_date(col("fecha")))
+.dropDuplicates(["id_factura"])
+)
+
+clientes = (clientes.withColumn("id_cliente", col("id_cliente").cast(IntegerType())) 
+.withColumn("fecha_alta", to_date(col("fecha_alta")))
+.dropDuplicates(["id_cliente"]))
+
 ventas.write.mode("overwrite").parquet("silver/ventas")
+fact.write.mode("overwrite").parquet("silver/facturas_meta")
+clientes.write.mode("overwrite").parquet("silver/clientes")
 
 print("Silver listo. ")
 spark.stop()
