@@ -8,7 +8,14 @@ ventas = spark.read.parquet("silver/ventas")
 
 # Show top 5 sales by amount
 print("Top 5 ventas por importe:")
-ventas.orderBy(col("importe").desc()).show(5)
+top5 = (ventas.groupBy("id_producto")
+        .agg(
+            sum("importe").alias("importe_total"),
+            sum("unidades").alias("unidades_total")
+        )
+        .orderBy(col("unidades_total").desc())
+        .show(5))
+
 
 # Ventas agrupadas por día
 print("\nVentas por día:")
