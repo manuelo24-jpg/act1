@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, sum, count, date_format
+from pyspark.sql.functions import col, sum, count
 
 spark = SparkSession.builder.appName("gold").getOrCreate()
 
