@@ -30,11 +30,11 @@ clientes = (clientes.withColumn("id_cliente", col("id_cliente").cast(IntegerType
 .withColumn("fecha_alta", to_date(col("fecha_alta")))
 .dropDuplicates(["id_cliente"]))
 
-ids = clientes.select("id_cliente").cast(IntegerType()).alias("id_cliente")
+ids = clientes.select(col("id_cliente").cast(IntegerType()).alias("id_cliente"))
 
-ventas_ok=( ventas
+ventas_ok = (ventas
     .join(ids, "id_cliente", "inner")
-    .where((col("unidades")) > 0 & (col("importe") > 0)))
+    .where((col("unidades") > 0) & (col("importe") > 0)))  # Fixed parentheses
 
 
 ventas.write.mode("overwrite").parquet("silver/ventas")
