@@ -37,12 +37,12 @@ def verify_amounts():
     # Calculate totals by client and date
     fact_totals = (fact
         .groupBy("id_cliente", "fecha")
-        .agg(round(sum("importe_total"), 2).alias("total_facturas"))
+        .agg((sum("importe_total"), 2).alias("total_facturas"))
     )
     
     ventas_totals = (ventas
         .groupBy("id_cliente", "fecha")
-        .agg(round(sum("importe"), 2).alias("total_ventas"))
+        .agg((sum("importe"), 2).alias("total_ventas"))
     )
     
     # Compare both totals and handle nulls
