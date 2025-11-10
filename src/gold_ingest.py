@@ -60,9 +60,9 @@ def verify_amounts():
     # Check if there are differences
     differences = comparison.filter(col("diferencia") != 0)
     if differences.count() > 0:
-        print("⚠️ Se encontraron diferencias en los importes!")
+        print("Se encontraron diferencias en los importes!")
     else:
-        print("✅ Los importes coinciden correctamente")
+        print("Los importes coinciden correctamente")
 
 # ...existing code...
 

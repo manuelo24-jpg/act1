@@ -7,6 +7,8 @@ ventas   = spark.read.option("header", True).csv("data/ventas_mes.csv")
 fact     = spark.read.option("header", True).csv("data/facturas_meta.csv")
 logs_web = spark.read.option("multiLine", "true").json("data/logs_web.json")
 
+logs_web = logs_web.show()
+
 ventas.write.mode("overwrite").parquet("bronze/ventas")
 clientes.write.mode("overwrite").parquet("bronze/clientes")
 fact.write.mode("overwrite").parquet("bronze/facturas_meta")
