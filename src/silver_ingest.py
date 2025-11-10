@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import to_date, col
+from pyspark.sql.functions import to_date, col, coalesce
 from pyspark.sql.types import IntegerType, DecimalType
 
 spark = SparkSession.builder.appName("silver").getOrCreate()
@@ -15,9 +15,15 @@ ventas = (ventas
 .withColumn("importe", col("importe").cast(DecimalType()))
 .filter((col("importe") > 0))
 .withColumn("id_producto", col("id_producto"))
-.withColumn("fecha", to_date(col("fecha")))
+.withColumn("fecha", coalesce(
+    to_date(col("fecha"), "yyyy-MM-dd"),
+    to_date(col("fecha"), "dd/MM/yyyy"),
+    to_date(col("fecha"), "MM/dd/yyyy")
+))
 .dropDuplicates(["id_venta"])
 )
+
+ventas.show(10)
 
 fact = (fact.withColumn("id_cliente", col("id_cliente").cast(IntegerType()))
 .withColumn("importe_total", col("importe_total").cast(DecimalType()))
