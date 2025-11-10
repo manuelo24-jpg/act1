@@ -1,5 +1,4 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import to_date, col
 
 spark = SparkSession.builder.appName("bronze").getOrCreate()
 
