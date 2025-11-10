@@ -33,8 +33,14 @@ fact = (fact.withColumn("id_cliente", col("id_cliente").cast(IntegerType()))
 )
 
 clientes = (clientes.withColumn("id_cliente", col("id_cliente").cast(IntegerType())) 
-.withColumn("fecha_alta", to_date(col("fecha_alta")))
+.withColumn("fecha_alta", coalesce(
+    to_date(col("fecha_alta"), "yyyy-MM-dd"),
+    to_date(col("fecha_alta"), "dd/MM/yyyy"),
+    to_date(col("fecha_alta"), "MM/dd/yyyy")
+))
 .dropDuplicates(["id_cliente"]))
+
+clientes.show(10)
 
 ids = clientes.select(col("id_cliente").cast(IntegerType()).alias("id_cliente"))
 
